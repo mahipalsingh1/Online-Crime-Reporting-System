@@ -1,0 +1,203 @@
+/* 🌈 Rainbow Animated Background */
+.home {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  background: linear-gradient(270deg, #ff9a9e, #fad0c4, #fbc2eb, #a1c4fd, #c2e9fb, #84fab0, #8fd3f4);
+  background-size: 1400% 1400%;
+  animation: rainbowFlow 20s ease infinite;
+  min-height: 100vh;
+}
+
+/* Rainbow animation keyframes */
+@keyframes rainbowFlow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* --- Slider as Background Image with Overlay --- */
+.slider-background {
+  height: 400px;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 30px;
+}
+
+.slider-overlay {
+  background: rgba(0, 0, 0, 0.4);
+  color: #fff;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 20px;
+}
+
+.slider-overlay h1 {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+  color: #f1f1f1;
+}
+
+.slider-overlay p {
+  font-size: 1.2rem;
+  max-width: 700px;
+  color: #ddd;
+}
+
+/* --- Info Section --- */
+.info {
+  padding: 20px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 0 10px #ccc;
+  backdrop-filter: blur(5px);
+}
+
+.info h1 {
+  color: #2a4d69;
+}
+
+.info h2 {
+  color: #4b86b4;
+  margin-top: 20px;
+}
+
+.info ul {
+  padding-left: 20px;
+}
+
+.info ul li {
+  margin-bottom: 8px;
+  color: #333;
+}
+
+/* --- About & Contact Sections --- */
+.about-contact {
+  max-width: 900px;
+  margin: 40px auto;
+  display: flex;
+  justify-content: space-between;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+.about, .contact {
+  flex: 1;
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 2px 2px 12px rgba(0,0,0,0.2);
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.about:hover, .contact:hover {
+  transform: translateY(-5px);
+}
+
+.about h2, .contact h2 {
+  font-size: 2rem;
+  color: #e91e63;
+  margin-bottom: 10px;
+  text-shadow: 1px 1px 2px #fff;
+}
+
+.about p, .contact p {
+  color: #333;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-top: 10px;
+}
+
+/* --- Footer --- */
+.footer {
+  background-color: #003366;
+  color: #ffffff;
+  text-align: center;
+  padding: 15px 0;
+  position: relative;
+  bottom: 0;
+  width: 100%;
+  margin-top: 50px;
+  border-top: 4px solid #00509e;
+}
+
+/* --- Human Rights Section Title --- */
+.section-title {
+  text-align: center;
+  font-size: 2.5rem;
+  margin: 40px 0 20px;
+  color: #3f51b5;
+  text-shadow: 1px 1px 2px #fff;
+}
+
+/* --- Human Rights Cards --- */
+.rights-grid {
+  display: flex;
+  justify-content: center;
+  gap: 25px;
+  flex-wrap: wrap;
+}
+
+.right-card {
+  background: linear-gradient(to bottom right, #ffffff, #f1f9ff);
+  border-radius: 15px;
+  width: 280px;
+  padding: 25px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.right-card:hover {
+  transform: scale(1.03);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+.right-card img {
+  width: 60px;
+  height: 60px;
+  margin-bottom: 15px;
+}
+
+.right-card h3 {
+  font-size: 1.2rem;
+  color: #003366;
+  margin-bottom: 10px;
+}
+
+.right-card p {
+  font-size: 0.95rem;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.right-card a {
+  color: #00509e;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.right-card a:hover {
+  text-decoration: underline;
+}
+
+/* --- Colored Left Borders --- */
+.right-equality {
+  border-left: 6px solid #4caf50;
+}
+.right-freedom {
+  border-left: 6px solid #ff9800;
+}
+.right-remedy {
+  border-left: 6px solid #f44336;
+}
+.right-section {
+  border-left: 6px solid #d7e635;
+}

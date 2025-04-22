@@ -1,0 +1,101 @@
+.view-complaints-container {
+    width: 70%;
+    margin: 30px auto;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  h2 {
+    text-align: center;
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  .no-complaints {
+    text-align: center;
+    font-size: 18px;
+    color: #888;
+  }
+  
+  .complaints-list {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .complaint-item {
+    padding: 15px;
+    margin: 10px 0;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .complaint-name {
+    font-weight: bold;
+    font-size: 18px;
+    color: #333;
+  }
+  
+  .crime-type {
+    font-style: italic;
+    color: #666;
+  }
+  
+  .complaint-detail {
+    font-size: 16px;
+    color: #444;
+  }
+  
+  .complaint-date {
+    font-size: 14px;
+    color: #888;
+  }
+  .view-complaints-container {
+    padding: 20px;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .complaint-header {
+    text-align: center;
+    color: #333;
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+  }
+  
+  .no-complaints {
+    text-align: center;
+    color: gray;
+  }
+  
+  .complaint-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+  }
+  
+  .complaint-card {
+    background-color: white;
+    padding: 15px;
+    width: 300px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .complaint-card h3 {
+    font-size: 1.4rem;
+    margin-bottom: 10px;
+  }
+  
+  .complaint-card p {
+    font-size: 1rem;
+    margin: 5px 0;
+  }
+  
+  
