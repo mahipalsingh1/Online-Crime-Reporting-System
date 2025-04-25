@@ -7,6 +7,7 @@
   color: #fff;
   border-bottom: 4px solid #f39c12;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  flex-wrap: wrap;
 }
 
 .navbar h2 {
@@ -14,6 +15,15 @@
   font-weight: 600;
 }
 
+/* Nav links container */
+.nav-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-top: 0.5rem;
+}
+
+/* Individual nav links */
 .nav-links a {
   color: #fff;
   margin-left: 1rem;
@@ -27,4 +37,45 @@
 .nav-links a:hover {
   background-color: #f39c12;
   color: #000;
+}
+
+/* Responsive Breakpoint for Tablets and Below */
+@media screen and (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1rem;
+  }
+
+  .navbar h2 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .nav-links {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .nav-links a {
+    margin: 0.3rem 0;
+    width: 100%;
+    text-align: left;
+  }
+}
+
+/* Responsive Breakpoint for Small Devices */
+@media screen and (max-width: 480px) {
+  .navbar {
+    padding: 0.8rem 1rem;
+  }
+
+  .navbar h2 {
+    font-size: 1.2rem;
+  }
+
+  .nav-links a {
+    font-size: 0.95rem;
+    padding: 6px 10px;
+  }
 }

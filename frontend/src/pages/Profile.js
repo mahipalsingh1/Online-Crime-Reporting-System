@@ -125,6 +125,12 @@ function Profile({ onLogout }) {
           <span>{editableUser.username}</span>
         </div>
 
+        {/* Displaying Role */}
+        <div className="profile-field">
+          <label>Role:</label>
+          <span>{editableUser.role}</span>
+        </div>
+
         {editableUser.role === 'Police' && (
           <div className="profile-field">
             <label>Police ID:</label>

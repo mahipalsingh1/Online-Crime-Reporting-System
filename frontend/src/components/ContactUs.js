@@ -4,9 +4,9 @@ function ContactUs() {
   return (
     <section className="contact">
       <h2>Contact Us</h2>
-      <p>Email: support@crimeportal.com</p>
-      <p>Phone: +91-9876543210</p>
-      <p>Developer: Mahipal Singh</p>
+      <p>Email: support@crimSafe.com</p>
+      <p>Phone: +91-9024XXXXXX</p>
+      <p>Developer: CrimSafe-Team</p>
     </section>
   );
 }

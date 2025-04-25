@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react';
 
 function ViewComplaints({ currentUser }) {
   const [complaints, setComplaints] = useState([]);
-  const [selectedComplaint, setSelectedComplaint] = useState(null);
-  const [updatedDescription, setUpdatedDescription] = useState('');
+  const [selectedComplaintId, setSelectedComplaintId] = useState(null);
+  const [statusInputs, setStatusInputs] = useState({});
+  const [complaintIdToUpdate, setComplaintIdToUpdate] = useState('');
+  const [updateError, setUpdateError] = useState('');
 
   useEffect(() => {
     const storedComplaints = JSON.parse(localStorage.getItem('complaints')) || [];
@@ -17,36 +19,87 @@ function ViewComplaints({ currentUser }) {
     }
   }, [currentUser]);
 
-  const isPublicUser = currentUser?.role === 'Public';
   const isPoliceUser = currentUser?.role === 'Police';
+  const isPublicUser = currentUser?.role === 'Public';
 
   const filteredComplaints = complaints.filter((complaint) => {
     if (isPublicUser) return complaint.username === currentUser.username;
     return true;
   });
 
-  const handleStatusClick = (complaint) => {
-    setSelectedComplaint({ ...complaint });
-    setUpdatedDescription(complaint.description || '');
+  const handleInputChange = (id, field, value) => {
+    setStatusInputs((prev) => ({
+      ...prev,
+      [id]: {
+        ...prev[id],
+        [field]: value
+      }
+    }));
   };
 
-  const handleStatusUpdate = () => {
-    const updatedComplaints = complaints.map((complaint) =>
-      complaint.id === selectedComplaint.id
-        ? {
-            ...complaint,
-            status: selectedComplaint.status,
-            officer: selectedComplaint.officer,
-            description: updatedDescription,
-            isStatusUpdated: true,
-          }
-        : complaint
-    );
+  const handleStatusUpdate = (complaintId) => {
+    const timestamp = new Date().toLocaleString();
+    const inputs = statusInputs[complaintId];
+    if (!inputs) return;
+
+    const updatedComplaints = complaints.map((complaint) => {
+      if (complaint.complaint_id === complaintId) {
+        const historyEntry = {
+          status: inputs.status || complaint.status,
+          officer: inputs.officer || complaint.officer,
+          description: inputs.description || complaint.description,
+          timestamp,
+        };
+
+        return {
+          ...complaint,
+          status: historyEntry.status,
+          officer: historyEntry.officer,
+          description: historyEntry.description,
+          history: [...(complaint.history || []), historyEntry],
+          newUpdateForUser: true,
+        };
+      }
+      return complaint;
+    });
 
     setComplaints(updatedComplaints);
     localStorage.setItem('complaints', JSON.stringify(updatedComplaints));
-    setSelectedComplaint(null);
-    setUpdatedDescription('');
+    setSelectedComplaintId(null);
+    setComplaintIdToUpdate('');
+    setUpdateError('');
+  };
+
+  const getStatusClass = (status) => {
+    switch (status) {
+      case 'Solved':
+        return 'status-badge green';
+      case 'Under Investigation':
+        return 'status-badge yellow';
+      case 'Invalid':
+        return 'status-badge red';
+      default:
+        return 'status-badge gray';
+    }
+  };
+
+  const handleUpdateStatusClick = () => {
+    const complaintIdStripped = complaintIdToUpdate.replace(/^C-/, '');
+    const complaintId = parseInt(complaintIdStripped, 10);
+
+    if (!complaintId || isNaN(complaintId)) {
+      setUpdateError('Please provide a valid Complaint ID.');
+      return;
+    }
+
+    const complaintExists = complaints.some((complaint) => complaint.complaint_id === `C-${complaintId}`);
+    if (!complaintExists) {
+      setUpdateError('Complaint ID not found.');
+      return;
+    }
+
+    setSelectedComplaintId(`C-${complaintId}`);
+    setUpdateError('');
   };
 
   return (
@@ -132,11 +185,18 @@ function ViewComplaints({ currentUser }) {
           transform: scale(1.05);
         }
 
-        @keyframes rainbowButton {
-          0% { background-position: 0% 50%; }
-          50% { background-position: 100% 50%; }
-          100% { background-position: 0% 50%; }
+        .status-badge {
+          display: inline-block;
+          padding: 4px 10px;
+          border-radius: 12px;
+          font-weight: bold;
+          color: white;
         }
+
+        .green { background-color: #38a169; }
+        .yellow { background-color: #d69e2e; }
+        .red { background-color: #e53e3e; }
+        .gray { background-color: #718096; }
 
         p.no-data {
           text-align: center;
@@ -144,82 +204,79 @@ function ViewComplaints({ currentUser }) {
           font-size: 1.2rem;
           font-weight: bold;
         }
+
+        .error-message {
+          color: red;
+          font-weight: bold;
+        }
       `}</style>
 
       <h2>{isPublicUser ? 'My Complaints' : 'All Complaints'}</h2>
+
+      {isPoliceUser && (
+        <div className="status-box">
+          <h3>Update Complaint Status</h3>
+          <label>Enter Complaint ID:</label>
+          <input
+            type="text"
+            placeholder="Complaint ID"
+            value={complaintIdToUpdate}
+            onChange={(e) => setComplaintIdToUpdate(e.target.value)}
+          />
+          <button onClick={handleUpdateStatusClick}>Search Complaint</button>
+          {updateError && <p className="error-message">{updateError}</p>}
+        </div>
+      )}
 
       {filteredComplaints.length === 0 ? (
         <p className="no-data">No complaints found.</p>
       ) : (
         filteredComplaints.map((complaint) => (
-          <div key={complaint.id} className="complaint-card">
+          <div key={complaint.complaint_id} className="complaint-card">
+            <p><strong>Complaint ID:</strong> {complaint.complaint_id}</p>
             <p><strong>Name:</strong> {complaint.name}</p>
             <p><strong>Email:</strong> {complaint.email}</p>
             <p><strong>Crime Type:</strong> {complaint.crimeType}</p>
             <p><strong>IPC Section:</strong> {complaint.ipcSection}</p>
             <p><strong>Description:</strong> {complaint.description}</p>
-            <p><strong>Status:</strong> {complaint.status || 'Pending'}</p>
+            <p><strong>Status:</strong> <span className={getStatusClass(complaint.status || 'Pending')}>{complaint.status || 'Pending'}</span></p>
             {complaint.officer && <p><strong>Assigned Officer:</strong> {complaint.officer}</p>}
 
-            {isPublicUser && (
-              <button onClick={() => handleStatusClick(complaint)}>
-                Track Status
-              </button>
-            )}
+            {selectedComplaintId === complaint.complaint_id && isPoliceUser && (
+              <div className="status-box">
+                <h3>Update Complaint Status</h3>
 
-            {isPoliceUser && !complaint.isStatusUpdated && (
-              <button onClick={() => handleStatusClick(complaint)}>
-                Update Status
-              </button>
+                <label>Status:</label>
+                <select
+                  value={statusInputs[complaint.complaint_id]?.status || complaint.status || 'Pending'}
+                  onChange={(e) => handleInputChange(complaint.complaint_id, 'status', e.target.value)}
+                >
+                  <option value="Pending">Pending</option>
+                  <option value="Under Investigation">Under Investigation</option>
+                  <option value="Solved">Solved</option>
+                  <option value="Invalid">Invalid</option>
+                </select>
+
+                <label>Assign Officer:</label>
+                <input
+                  type="text"
+                  placeholder="Officer Name"
+                  value={statusInputs[complaint.complaint_id]?.officer || complaint.officer || ''}
+                  onChange={(e) => handleInputChange(complaint.complaint_id, 'officer', e.target.value)}
+                />
+
+                <label>Description:</label>
+                <textarea
+                  placeholder="Update description"
+                  value={statusInputs[complaint.complaint_id]?.description || complaint.description || ''}
+                  onChange={(e) => handleInputChange(complaint.complaint_id, 'description', e.target.value)}
+                />
+
+                <button onClick={() => handleStatusUpdate(complaint.complaint_id)}>Save Updates</button>
+              </div>
             )}
           </div>
         ))
-      )}
-
-      {selectedComplaint && isPoliceUser && (
-        <div className="status-box">
-          <h3>Update Complaint Status</h3>
-
-          <label>Status:</label>
-          <select
-            value={selectedComplaint.status || 'Pending'}
-            onChange={(e) =>
-              setSelectedComplaint({ ...selectedComplaint, status: e.target.value })
-            }
-          >
-            <option value="Pending">Pending</option>
-            <option value="Under Investigation">Under Investigation</option>
-            <option value="Solved">Solved</option>
-            <option value="Invalid">Invalid</option>
-          </select>
-
-          <label>Assign Officer:</label>
-          <input
-            type="text"
-            placeholder="Officer Name"
-            value={selectedComplaint.officer || ''}
-            onChange={(e) =>
-              setSelectedComplaint({ ...selectedComplaint, officer: e.target.value })
-            }
-          />
-
-          <label>Description:</label>
-          <textarea
-            placeholder="Update description"
-            value={updatedDescription}
-            onChange={(e) => setUpdatedDescription(e.target.value)}
-          />
-
-          <button onClick={handleStatusUpdate}>Save Updates</button>
-        </div>
-      )}
-
-      {selectedComplaint && isPublicUser && (
-        <div className="status-box">
-          <h3>Complaint Status</h3>
-          <p><strong>Status:</strong> {selectedComplaint.status || 'Pending'}</p>
-          <p><strong>Assigned Officer:</strong> {selectedComplaint.officer || 'Not Assigned'}</p>
-        </div>
       )}
     </div>
   );

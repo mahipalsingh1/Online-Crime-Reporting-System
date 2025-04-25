@@ -42,28 +42,28 @@ function Home() {
 
         <div className="rights-grid">
           <div className="right-card right-equality">
-            <img src="https://cdn-icons-png.flaticon.com/512/1040/1040230.png" alt="Equality Icon" />
-            <h3>Right to Equality</h3>
-            <p>Equal treatment under the law, without discrimination.</p>
-            <Link to="/right-to-equality">Read More →</Link>
+            <img src="https://cdn-icons-png.flaticon.com/512/9958/9958740.png" alt="Equality Icon" />
+            <h3>Child Safety</h3>
+            <p>Learn about laws and measures to protect children.</p>
+            <Link to="/child-safety">Read More →</Link>
           </div>
 
           <div className="right-card right-freedom">
-            <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Freedom Icon" />
-            <h3>Right to Freedom</h3>
-            <p>Freedom of speech, expression, movement, and profession.</p>
-            <Link to="/right-to-freedom">Read More →</Link>
+            <img src="https://cdn-icons-png.flaticon.com/512/15583/15583440.png" alt="Freedom Icon" />
+            <h3>Women Safety</h3>
+            <p>Explore legal rights and safety tips for women.</p>
+            <Link to="/women-safety">Read More →</Link>
           </div>
 
           <div className="right-card right-remedy">
-            <img src="https://cdn-icons-png.flaticon.com/512/1828/1828940.png" alt="Remedy Icon" />
-            <h3>Right to Remedies</h3>
-            <p>Access to court if fundamental rights are violated.</p>
-            <Link to="/right-to-remedy">Read More →</Link>
+            <img src="https://cdn-icons-png.flaticon.com/512/5145/5145934.png" alt="Remedy Icon" />
+            <h3>Cyber Security</h3>
+            <p>Understand cyber laws and how to stay safe online.</p>
+            <Link to="/cyber-security">Read More →</Link>
           </div>
 
           <div className="right-card right-section">
-            <img src="https://cdn-icons-png.flaticon.com/512/1828/1828940.png" alt="IPC Icon" />
+            <img src="https://cdn-icons-png.flaticon.com/512/1040/1040230.png" alt="IPC Icon" />
             <h3>IPC Section</h3>
             <p>Know legal actions available under Indian Penal Code.</p>
             <Link to="/ipc-section">Read More →</Link>

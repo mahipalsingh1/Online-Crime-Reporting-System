@@ -20,6 +20,7 @@ function Dashboard({ user, onRegister }) {
     date: '',
     mobile: ''
   });
+  const [error, setError] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -45,7 +46,29 @@ function Dashboard({ user, onRegister }) {
       return;
     }
 
-    const newComplaint = { ...form, username: user.username };
+    // Mobile number validation (example: 10-digit number)
+    const mobileRegex = /^[0-9]{10}$/;
+    if (!form.mobile) {
+      setError('Mobile number is required.');
+      return;
+    }
+    if (!mobileRegex.test(form.mobile)) {
+      setError('Please enter a valid 10-digit mobile number.');
+      return;
+    }
+
+    // Validation for other fields
+    if (!form.name || !form.location || !form.detail) {
+      setError('Please fill in all required fields.');
+      return;
+    }
+
+    // Generate a unique complaint_id based on timestamp or any other method
+    const complaint_id = `C-${Date.now()}`;
+
+    // Add complaint_id to the complaint
+    const newComplaint = { ...form, username: user.username, complaint_id };
+
     const existingComplaints = JSON.parse(localStorage.getItem('complaints')) || [];
     const updatedComplaints = [...existingComplaints, newComplaint];
 
@@ -118,10 +141,17 @@ function Dashboard({ user, onRegister }) {
           button:hover {
             background-color: #00509e;
           }
+
+          .error-message {
+            color: red;
+            font-size: 0.9rem;
+            margin-top: 10px;
+          }
         `}
       </style>
 
       <h2>Register a Complaint</h2>
+      {error && <div className="error-message">{error}</div>}
       <form onSubmit={handleSubmit}>
         <input type="text" name="name" placeholder="Complainant's Name" onChange={handleChange} required />
         <input type="text" name="location" placeholder="Crime Location" onChange={handleChange} required />

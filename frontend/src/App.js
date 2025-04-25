@@ -9,6 +9,10 @@ import Dashboard from './pages/Dashboard';
 import ViewComplaints from './pages/ViewComplaints';
 import UpdateStatus from './pages/UpdateStatus';
 import IPCSection from './components/ipcSection';
+import Child from './components/Child'; // Ensure correct path here
+import WomenSafety from './components/WomenSafety';
+import CyberSecurity from './components/CyberSecurity';
+
 
 function App() {
   const [complaints, setComplaints] = useState(() => JSON.parse(localStorage.getItem('complaints')) || []);
@@ -61,7 +65,6 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/login" element={<Login onLogin={handleLogin} />} />
-
         <Route
           path="/profile"
           element={
@@ -70,7 +73,6 @@ function App() {
             />
           }
         />
-
         <Route
           path="/dashboard"
           element={
@@ -83,7 +85,13 @@ function App() {
           path="/viewcomplaints"
           element={
             <ProtectedRoute
-              element={<ViewComplaints complaints={complaints} currentUser={currentUser} />}
+              element={
+                <ViewComplaints
+                  complaints={complaints}
+                  currentUser={currentUser}
+                  onUpdateComplaint={updateComplaintStatus}
+                />
+              }
             />
           }
         />
@@ -96,6 +104,11 @@ function App() {
           }
         />
         <Route path="/ipc-section" element={<IPCSection />} />
+        <Route path="/child-safety" element={<Child />} />
+        <Route path="/women-safety" element={<WomenSafety />} />
+        <Route path="/cyber-security" element={<CyberSecurity />} />
+    
+
       </Routes>
     </Router>
   );
