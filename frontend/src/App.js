@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import Navbar from './pages/Navbar';
+import axios from 'axios'; 
 import Home from './pages/Home';
 import SignUp from './pages/Signup';
 import Login from './pages/Login';
@@ -35,11 +36,16 @@ function App() {
     localStorage.setItem('complaints', JSON.stringify(complaints));
   }, [currentUser, complaints]);
 
-  const handleRegisterComplaint = (newComplaint) => {
-    const updatedComplaints = [...complaints, newComplaint];
-    setComplaints(updatedComplaints);
+  const handleRegisterComplaint = async (newComplaint) => {
+    try {
+      const response = await axios.post("http://localhost:5000/api/complaints", newComplaint); // ✅ POST moved here with correct data
+      const savedComplaint = response.data;
+      const updatedComplaints = [...complaints, savedComplaint];
+      setComplaints(updatedComplaints);
+    } catch (error) {
+      console.error("Error posting complaint:", error);
+    }
   };
-
   const handleLogin = (user) => {
     setCurrentUser(user);
     localStorage.setItem('currentUser', JSON.stringify(user));
