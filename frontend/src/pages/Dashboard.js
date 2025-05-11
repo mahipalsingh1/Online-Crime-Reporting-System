@@ -2,12 +2,33 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const crimeIpcMapping = {
-  "Theft": "IPC Section 378",
+  "Chain Snatching": "IPC Section 356",
+  "Pickpocketing": "IPC Section 379",
+  "Mobile Theft": "IPC Section 379",
+  "Vehicle Theft": "IPC Section 379",
+  "House Burglary": "IPC Section 457 and 380",
+  "ATM Fraud": "IPC Section 420 and IT Act Section 66",
+  "Online Scam": "IPC Section 420 and IT Act Section 66D",
+  "Cyber Bullying": "IT Act Section 66A",
+  "Fake Job Scam": "IPC Section 420",
+  "Domestic Violence": "Protection of Women from Domestic Violence Act, 2005",
+  "Sexual Harassment": "IPC Section 354A",
+  "Kidnapping": "IPC Section 363",
+  "Dowry Harassment": "IPC Section 498A",
   "Murder": "IPC Section 302",
-  "Fraud": "IPC Section 420",
+  "Attempt to Murder": "IPC Section 307",
   "Assault": "IPC Section 351",
-  "Cyber Crime": "IT Act Section 66"
+  "Robbery": "IPC Section 392",
+  "Drug Trafficking": "NDPS Act, 1985 Section 21",
+  "Child Abuse": "POCSO Act, 2012 Section 7 and 9",
+  "Human Trafficking": "IPC Section 370",
+  "Acid Attack": "IPC Section 326A",
+  "Public Nuisance": "IPC Section 268",
+  "Cyber Hacking": "IT Act Section 66",
+  "Identity Theft": "IT Act Section 66C",
+  "Credit Card Fraud": "IT Act Section 66C and 66D"
 };
+
 
 function Dashboard({ user, onRegister }) {
   const [form, setForm] = useState({

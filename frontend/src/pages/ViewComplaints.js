@@ -209,6 +209,22 @@ function ViewComplaints({ currentUser }) {
           color: red;
           font-weight: bold;
         }
+
+        .history {
+          margin-top: 15px;
+          background: #f7f7f7;
+          border-radius: 10px;
+          padding: 10px;
+        }
+
+        .history h4 {
+          margin-bottom: 10px;
+          color: #333;
+        }
+
+        .history li {
+          margin-bottom: 8px;
+        }
       `}</style>
 
       <h2>{isPublicUser ? 'My Complaints' : 'All Complaints'}</h2>
@@ -273,6 +289,22 @@ function ViewComplaints({ currentUser }) {
                 />
 
                 <button onClick={() => handleStatusUpdate(complaint.complaint_id)}>Save Updates</button>
+              </div>
+            )}
+
+            {complaint.history && complaint.history.length > 0 && isPublicUser && (
+              <div className="history">
+                <h4>Status Update History</h4>
+                <ul>
+                  {complaint.history.map((entry, idx) => (
+                    <li key={idx}>
+                      <strong>{entry.timestamp}</strong><br />
+                      Status: <b>{entry.status}</b><br />
+                      Officer: <b>{entry.officer || 'N/A'}</b><br />
+                      Description: {entry.description || 'No description'}
+                    </li>
+                  ))}
+                </ul>
               </div>
             )}
           </div>
