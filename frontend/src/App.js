@@ -14,7 +14,6 @@ import Child from './components/Child'; // Ensure correct path here
 import WomenSafety from './components/WomenSafety';
 import CyberSecurity from './components/CyberSecurity';
 
-axios.post("http://localhost:5000/api/complaints", data);
 
 
 
