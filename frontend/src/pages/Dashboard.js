@@ -185,7 +185,14 @@ function Dashboard({ user, onRegister }) {
         <input type="text" name="ipcSection" value={form.ipcSection} placeholder="IPC Section" readOnly />
         <textarea name="detail" placeholder="Crime Details" onChange={handleChange} required />
         <input type="file" name="evidence" onChange={handleChange} />
-        <input type="date" name="date" onChange={handleChange} required />
+        <input
+  type="date"
+  name="date"
+  onChange={handleChange}
+  required
+  max={new Date().toISOString().split("T")[0]}
+/>
+
         <input type="tel" name="mobile" placeholder="Your Mobile Number" onChange={handleChange} required />
         <button type="submit">Submit Complaint</button>
       </form>

@@ -218,7 +218,14 @@ function Signup() {
           <input name="name" placeholder="Full Name" value={form.name} onChange={handleChange} />
           {errors.name && <div className="error">{errors.name}</div>}
 
-          <input name="dob" type="date" value={form.dob} onChange={handleChange} />
+          <input
+  name="dob"
+  type="date"
+  value={form.dob}
+  onChange={handleChange}
+  max={new Date().toISOString().split("T")[0]}
+/>
+
           {errors.dob && <div className="error">{errors.dob}</div>}
 
           <select name="gender" value={form.gender} onChange={handleChange}>
