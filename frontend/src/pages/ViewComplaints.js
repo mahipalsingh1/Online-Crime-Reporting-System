@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import 'jspdf-autotable';
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
 
 function ViewComplaints({ currentUser }) {
   const [complaints, setComplaints] = useState([]);
@@ -100,6 +103,43 @@ function ViewComplaints({ currentUser }) {
 
     setSelectedComplaintId(`C-${complaintId}`);
     setUpdateError('');
+  };
+
+  // Export complaint as PDF - only for public users
+  const exportComplaintAsPDF = (complaint) => {
+    const doc = new jsPDF();
+
+    doc.setFontSize(18);
+    doc.text('Registered Complaint Details', 14, 22);
+    doc.setFontSize(12);
+    doc.setTextColor(100);
+
+    const message = "This document contains the details of the complaint you registered. Please keep it for your records.";
+
+    const tableColumn = ['Field', 'Information'];
+    const tableRows = [
+      ['Complaint-Id', complaint.complaint_id],
+      ['Name', complaint.name],
+      ['Email', complaint.email],
+      ['Mobile No.', complaint.mobile || 'N/A'],
+      ['Date', complaint.date || 'N/A'],
+      ['Location', complaint.location || 'N/A'],
+      ['Crime Type', complaint.crimeType],
+      ['IPC Section', complaint.ipcSection],
+      ['Description', complaint.description || 'N/A'],
+    ];
+
+    autoTable(doc, {
+      startY: 30,
+      head: [tableColumn],
+      body: tableRows,
+      theme: 'striped',
+      headStyles: { fillColor: [40, 116, 166] }
+    });
+
+    doc.text(message, 14, doc.lastAutoTable.finalY + 10);
+
+    doc.save(`Complaint_${complaint.complaint_id}.pdf`);
   };
 
   return (
@@ -255,53 +295,52 @@ function ViewComplaints({ currentUser }) {
             <p><strong>Crime Type:</strong> {complaint.crimeType}</p>
             <p><strong>IPC Section:</strong> {complaint.ipcSection}</p>
             <p><strong>Description:</strong> {complaint.description}</p>
-            <p><strong>Status:</strong> <span className={getStatusClass(complaint.status || 'Pending')}>{complaint.status || 'Pending'}</span></p>
-            {complaint.officer && <p><strong>Assigned Officer:</strong> {complaint.officer}</p>}
+            <p><strong>Status:</strong> <span className={getStatusClass(complaint.status)}>{complaint.status}</span></p>
+
+            {/* Show Export PDF only for Public users */}
+            {isPublicUser && (
+              <button onClick={() => exportComplaintAsPDF(complaint)}>
+                Export PDF
+              </button>
+            )}
 
             {selectedComplaintId === complaint.complaint_id && isPoliceUser && (
               <div className="status-box">
-                <h3>Update Complaint Status</h3>
-
-                <label>Status:</label>
+                <label>Assign Officer:</label>
+                <input
+                  type="text"
+                  placeholder="Officer Name"
+                  value={statusInputs[complaint.complaint_id]?.officer || ''}
+                  onChange={(e) => handleInputChange(complaint.complaint_id, 'officer', e.target.value)}
+                />
+                <label>Update Status:</label>
                 <select
-                  value={statusInputs[complaint.complaint_id]?.status || complaint.status || 'Pending'}
+                  value={statusInputs[complaint.complaint_id]?.status || ''}
                   onChange={(e) => handleInputChange(complaint.complaint_id, 'status', e.target.value)}
                 >
+                  <option value="">Select Status</option>
                   <option value="Pending">Pending</option>
                   <option value="Under Investigation">Under Investigation</option>
                   <option value="Solved">Solved</option>
                   <option value="Invalid">Invalid</option>
                 </select>
-
-                <label>Assign Officer:</label>
-                <input
-                  type="text"
-                  placeholder="Officer Name"
-                  value={statusInputs[complaint.complaint_id]?.officer || complaint.officer || ''}
-                  onChange={(e) => handleInputChange(complaint.complaint_id, 'officer', e.target.value)}
-                />
-
                 <label>Description:</label>
                 <textarea
                   placeholder="Update description"
-                  value={statusInputs[complaint.complaint_id]?.description || complaint.description || ''}
+                  value={statusInputs[complaint.complaint_id]?.description || ''}
                   onChange={(e) => handleInputChange(complaint.complaint_id, 'description', e.target.value)}
                 />
-
-                <button onClick={() => handleStatusUpdate(complaint.complaint_id)}>Save Updates</button>
+                <button onClick={() => handleStatusUpdate(complaint.complaint_id)}>Update Status</button>
               </div>
             )}
 
-            {complaint.history && complaint.history.length > 0 && isPublicUser && (
+            {complaint.history && complaint.history.length > 0 && (
               <div className="history">
-                <h4>Status Update History</h4>
+                <h4>History</h4>
                 <ul>
                   {complaint.history.map((entry, idx) => (
                     <li key={idx}>
-                      <strong>{entry.timestamp}</strong><br />
-                      Status: <b>{entry.status}</b><br />
-                      Officer: <b>{entry.officer || 'N/A'}</b><br />
-                      Description: {entry.description || 'No description'}
+                      <strong>Status:</strong> {entry.status}, <strong>Officer:</strong> {entry.officer}, <strong>Description:</strong> {entry.description}, <em>{entry.timestamp}</em>
                     </li>
                   ))}
                 </ul>

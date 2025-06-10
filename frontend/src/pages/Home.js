@@ -31,7 +31,7 @@ function Home() {
       >
         <div className="slider-overlay">
           <h1>Welcome to CRIMSAFE</h1>
-          <p>Report crimes confidently. Know your rights. Stay protected.</p>
+          <p>"Report crime anytime, from anywhere — your safety is just a click away."</p>
         </div>
       </div>
 
